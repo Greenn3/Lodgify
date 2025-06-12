@@ -5,8 +5,7 @@ import com.example.serverside.Entities.AccType;
 import com.example.serverside.Entities.Booking;
 import com.example.serverside.Entities.PricePerType;
 import com.example.serverside.Entities.PricePeriod;
-import com.example.serverside.Services.BookingService;
-import com.google.gson.Gson;
+import com.example.serverside.Services.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-public class BookingController {
+public class Controller {
 
 
 
-    private final BookingService service;
+
     Booking bookingForPriceCalculation;
     private static final String API_KEY = "rjfghreohgaojfjeorjpw45i945jijJDI3J";;
 
@@ -31,21 +30,24 @@ public class BookingController {
     private boolean isValidApiKey(String authorizationHeader) {
         return authorizationHeader != null && authorizationHeader.equals("Bearer " + API_KEY);
     }
+    private final Service service;
     @Autowired
-    public BookingController(BookingService service) {
+    public Controller(Service service) {
         this.service = service;
     }
+
 @GetMapping("/check")
 public ResponseEntity<String> check() {
         return ResponseEntity.ok("OK");
 }
+
 @GetMapping("/checkIfFree")
 public ResponseEntity<Boolean> checkIfFree(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                            @RequestParam("arrivalDate") String arrivalDate,
                                            @RequestParam("departureDate") String departureDate,
                                            @RequestParam("type") String typeId) {
     if (!isValidApiKey(authorizationHeader)) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Return 403 if the key is invalid
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
     }
 
 AccType type = service.getAccTypeById(Integer.parseInt(typeId));
@@ -56,34 +58,26 @@ AccType type = service.getAccTypeById(Integer.parseInt(typeId));
 }
 
 
-    @GetMapping("/rezerwacje")
-    public ResponseEntity<List<Booking>> getBookings(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
-        // Check if the Authorization header is present and contains the correct API key
+    @GetMapping("/allBookings")
+    public ResponseEntity<List<Booking>> getBookings(
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         if (!isValidApiKey(authorizationHeader)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Return 403 if the key is invalid
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
-
-        // If the API key is valid, return the list of bookings
         List<Booking> bookings = service.getBookings();
         return ResponseEntity.ok(bookings);
     }
 
-    @PostMapping("/dodajRezerwacje")
+    @PostMapping("/addBooking")
     public ResponseEntity<Void> saveBooking(
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @RequestBody Booking booking) {
 
         if (!isValidApiKey(authorizationHeader)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 if API key is invalid
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-
-        System.out.println(booking.getName());
-        System.out.println(booking.getArrivalDate());
-        System.out.println(booking.getDepartureDate());
-        System.out.println(booking.getAccTypeFK());
-        System.out.println(booking.isPaid());
         service.addNewBooking(booking);
-        return ResponseEntity.ok().build(); // 200 OK on success
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getBookingByArrivalDate")
@@ -194,7 +188,9 @@ AccType type = service.getAccTypeById(Integer.parseInt(typeId));
 
     @GetMapping("/getPrice")
     public ResponseEntity<Double> getPrice(
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader)
+
+    {
 
         if (!isValidApiKey(authorizationHeader)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

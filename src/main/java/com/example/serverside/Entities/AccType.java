@@ -4,9 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-
-
+import lombok.*;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 
 @Entity
 @Table(name="acc_type")
@@ -16,28 +19,4 @@ public class AccType {
     @Column(name = "name")
     String name;
 
-
-    public AccType(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public AccType() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

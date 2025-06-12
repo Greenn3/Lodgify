@@ -10,22 +10,19 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
-List<Booking> findBookingByArrivalDate(LocalDate arrivalDate);
+    List<Booking> findBookingByArrivalDate(LocalDate arrivalDate);
 
-List<Booking> findBookingByDepartureDate(LocalDate departureDate);
+    List<Booking> findBookingByDepartureDate(LocalDate departureDate);
 
-Booking findBookingById(Integer id);
+    Booking findBookingById(Integer id);
 
     List<Booking> findBookingByName(String name);
 
     List<Booking> findBookingByIsPaid(Boolean isPaid);
-
-Booking deleteBookingById(Integer id);
-
 
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN true ELSE false END " +
             "FROM Booking b " +
@@ -33,6 +30,6 @@ Booking deleteBookingById(Integer id);
             "AND ( (b.arrivalDate < :date AND b.departureDate > :date) " +
             "OR b.arrivalDate = :arrDate )")
     boolean existsBookingWithinDateRangeAndAccType(@Param("date") LocalDate date,
-                                                  @Param("arrDate") LocalDate arrDate,
+                                                   @Param("arrDate") LocalDate arrDate,
                                                    @Param("accType") AccType accType);
 }
