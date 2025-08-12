@@ -11,7 +11,7 @@ I have already applied improved design and coding standards in another project: 
 I plan to refactor this API to follow cleaner architecture and better conventions, and to rebuild the frontend as a modern web application.
 
 
-The system handles the **core business logic**, including:  
+## The system handles the **core business logic**, including:  
 - Managing **reservations** (adding, modifying, deleting)  
 - **Price calculations** based on stay period & accommodation type  
 - Managing **pricing lists & accommodation types**  
