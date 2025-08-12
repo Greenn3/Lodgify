@@ -3,6 +3,14 @@
 ## Overview  
 Lodgify Server is the **backend for a client-server property management system (PMS)**, built for a specific accommodation facility. It is developed in **Java with Spring Framework** and follows a **REST API architecture** with controllers, services, and repositories.  
 
+## ⚠️ Disclaimer
+
+This API is my very first REST API built with Spring, so it is **not perfect** and not fully aligned with best practices — and I’m aware of that.  
+I have already applied improved design and coding standards in another project: [SyncCart](https://github.com/Greenn3/SyncCart).  
+
+I plan to refactor this API to follow cleaner architecture and better conventions, and to rebuild the frontend as a modern web application.
+
+
 The system handles the **core business logic**, including:  
 - Managing **reservations** (adding, modifying, deleting)  
 - **Price calculations** based on stay period & accommodation type  
